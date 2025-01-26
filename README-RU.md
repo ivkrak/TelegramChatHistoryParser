@@ -95,5 +95,4 @@ curl -X GET "http://localhost:8000/?chat_id=123456&offset=0&limit=10"
 ## Документация API
 После запуска приложения документация будет доступна по адресу:
 - Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
-- ReDoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 

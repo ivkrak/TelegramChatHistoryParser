@@ -9,7 +9,5 @@ class Settings(BaseSettings):
     PHONE_NUMBER: str
     CLOUD_PASSWORD: str | None = None
 
-    API_KEY: str
-
 
 settings = Settings()
