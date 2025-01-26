@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, HTTPException, Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pyrogram import Client
-
+from pyrogram.errors.exceptions import PeerIdInvalid
 from settings import settings
 
 # Pyrogram Client
@@ -68,22 +68,25 @@ async def get_chat_history(
     messages_history = []
     if chat_id is None and chat_username is None:
         raise HTTPException(status_code=400, detail="chat_id or chat_username is required")
-    async for message in tg.get_chat_history(
-            chat_id=chat_id if chat_id is not None else chat_username,
-            offset=offset,
-            limit=limit,
-    ):
-        messages_history.append(
-            {
-                'id': message.id,
-                'from_user_id': message.from_user.id if message.from_user else None,
-                'from_user_username': message.from_user.username if message.from_user else None,
-                'text': message.text if message.text else None,
-                'date': message.date,
-                'reply_to_message_id': message.reply_to_message_id if message.reply_to_message_id else None,
-                'reply_to_top_message_id': message.reply_to_top_message_id if message.reply_to_top_message_id else None,
-            }
-        )
+    try:
+        async for message in tg.get_chat_history(
+                chat_id=chat_id if chat_id is not None else chat_username,
+                offset=offset,
+                limit=limit,
+        ):
+            messages_history.append(
+                {
+                    'id': message.id,
+                    'from_user_id': message.from_user.id if message.from_user else None,
+                    'from_user_username': message.from_user.username if message.from_user else None,
+                    'text': message.text if message.text else None,
+                    'date': message.date,
+                    'reply_to_message_id': message.reply_to_message_id if message.reply_to_message_id else None,
+                    'reply_to_top_message_id': message.reply_to_top_message_id if message.reply_to_top_message_id else None,
+                }
+            )
+    except PeerIdInvalid:
+        return HTTPException(status_code=404, detail="Invalid chat_id or chat_username or chat not found")
     return messages_history
 
 
