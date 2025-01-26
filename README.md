@@ -12,7 +12,7 @@ Chat Parser API is a FastAPI application designed to fetch chat history from Tel
 ## Installation and Setup
 
 ### Requirements
-- Python 3.12.4
+- Python 3.12
 - Docker and Docker Compose
 
 ### Installation Steps
@@ -24,7 +24,7 @@ Chat Parser API is a FastAPI application designed to fetch chat history from Tel
    ```
 
 2. **Create a `.env` file**:
-   
+
    ### Where can I find the `API_ID` and `API_HASH`? You can find them here: https://my.telegram.org/auth.
 
    Copy the contents of `.env.example` and save them into a `.env` file. Fill in the variables with your data:
@@ -34,6 +34,8 @@ Chat Parser API is a FastAPI application designed to fetch chat history from Tel
    PHONE_NUMBER=Your_phone_number
    CLOUD_PASSWORD=Your_cloud_password_if_applicable
    ```
+
+   > **Note**: If you don't need authorization, leave the `API_KEY` empty or don't set it at all.
 
 3. **Build and run using Docker**:
    ```bash
@@ -56,7 +58,10 @@ Fetch chat history.
 
 #### Example Request
 ```bash
-curl -X GET "http://localhost:8000/?chat_id=123456&offset=0&limit=10"
+curl -X 'GET'\
+    'http://localhost:8000/?chat_username=me&offset=0&limit=100'\
+    -H 'accept: application/json'\
+    -H 'Authorization: Bearer 123'
 ```
 
 #### Example Response
