@@ -1,0 +1,6 @@
+services:
+  chat_parser:
+    build: .
+    ports:
+      - "8000:8000"
+    command: sh -c "python3 main.py"
