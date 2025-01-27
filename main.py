@@ -86,7 +86,7 @@ async def get_chat_history(
                 }
             )
     except PeerIdInvalid:
-        return HTTPException(status_code=404, detail="Invalid chat_id or chat_username or chat not found")
+        raise HTTPException(status_code=404, detail="Invalid chat_id or chat_username or chat not found")
     return messages_history
 
 
